@@ -1,0 +1,22 @@
+databases:
+  - name: api-peliculas-db
+    plan: free
+    databaseName: api_peliculas
+    user: api_user
+
+services:
+  - type: web
+    name: api-peliculas
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    initialDeployHook: node src/setup-db.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: api-peliculas-db
+          property: connectionString
+      - key: PGSSL
+        value: "true"
