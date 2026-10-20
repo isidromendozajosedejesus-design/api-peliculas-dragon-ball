@@ -9,10 +9,9 @@ services:
     name: api-peliculas
     runtime: node
     plan: free
-    buildCommand: npm ci
+    buildCommand: npm ci && node src/setup-db.js
     startCommand: node src/server.js
     healthCheckPath: /health
-    initialDeployHook: node src/setup-db.js
     envVars:
       - key: DATABASE_URL
         fromDatabase:
